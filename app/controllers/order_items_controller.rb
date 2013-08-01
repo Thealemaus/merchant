@@ -2,6 +2,10 @@ class OrderItemsController < ApplicationController
   before_action :load_order, only: [:create]
   before_action :set_order_item, only: [:show, :edit, :update, :destroy]
 
+  def index
+    @order_items = OrderItem.all
+  end
+
   # GET /order_items/1/edit
   def edit
   end
@@ -10,9 +14,7 @@ class OrderItemsController < ApplicationController
   # POST /order_items.json
   def create
     @order_item = @order.order_items.new(quantity: 1, product_id: params[:product_id])
-
-
-    respond_to do |format|
+      respond_to do |format|
       if @order_item.save
         format.html { redirect_to @order, notice: 'Successfully added product to cart.' }
         format.json { render action: 'show', status: :created, location: @order_item }
@@ -42,7 +44,7 @@ class OrderItemsController < ApplicationController
   def destroy
     @order_item.destroy
     respond_to do |format|
-      format.html { redirect_to order_items_url }
+      format.html { redirect_to @order_item.order }
       format.json { head :no_content }
     end
   end
